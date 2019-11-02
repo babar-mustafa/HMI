@@ -380,7 +380,7 @@ public class SignupFragment extends Fragment implements INetworkListener {
             if (senderTag.equals(TAG_SIGNUP)) {
                 User user = (User) response;
                 Utils.showToastMessage(user.getMessage(), getActivity());
-
+                getFragmentManager().popBackStack();
             }
         } catch (Exception e) {
             Utils.showToastMessage(getActivity().getResources().getString(R.string.error_String), getActivity());
