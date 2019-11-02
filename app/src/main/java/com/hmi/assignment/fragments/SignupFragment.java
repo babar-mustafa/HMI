@@ -32,9 +32,9 @@ import java.util.HashMap;
 public class SignupFragment extends Fragment implements INetworkListener {
 
     View view;
-    CustomEditText useremail, userpassword, userconfirmpassword, fullname,number;
+    CustomEditText useremail, userpassword, userconfirmpassword, fullname, number;
     LinearLayout backbutton;
-    boolean isvalideEmail, isValidPassword, isconfirmValidPassword,isvalidMobile;
+    boolean isvalideEmail, isValidPassword, isconfirmValidPassword, isvalidMobile;
     Button registeruser;
     Dialog progressDialog;
     private static final Object TAG_SIGNUP = "Signup";
@@ -64,14 +64,14 @@ public class SignupFragment extends Fragment implements INetworkListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (number.getText().toString().length()>=10) {
+                if (number.getText().toString().length() >= 10) {
                     isvalidMobile = true;
                     Drawable img = getContext().getResources().getDrawable(R.drawable.check_circle);
-                    userconfirmpassword.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+                    number.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
                 } else {
                     isvalidMobile = false;
                     Drawable img = getContext().getResources().getDrawable(R.drawable.close);
-                    userconfirmpassword.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+                    number.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
 
                 }
             }
@@ -89,7 +89,7 @@ public class SignupFragment extends Fragment implements INetworkListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (userpassword.getText().toString().equals(userconfirmpassword.getText().toString())) {
+                if (isValidPassword(userconfirmpassword)) {
                     isconfirmValidPassword = true;
                     Drawable img = getContext().getResources().getDrawable(R.drawable.check_circle);
                     userconfirmpassword.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
@@ -171,36 +171,41 @@ public class SignupFragment extends Fragment implements INetworkListener {
 
                     } else {
 
+                        if (number.getText().toString().trim().length() >= 10) {
+                            if (Utils.isValidEmail(useremail.getText().toString().trim())) {
+                                if (fullname.getText().toString().length() == 4 || fullname.getText().toString().length() > 4) {
+                                    if (userpassword.getText().toString().length() == 6 ||
+                                            userpassword.getText().toString().length() > 6) {
+                                        if (userpassword.getText().toString().equals(userconfirmpassword.getText().toString())) {
 
-                        if (Utils.isValidEmail(useremail.getText().toString().trim())) {
-                            if (fullname.getText().toString().length() == 4 || fullname.getText().toString().length() > 4) {
-                                if (userpassword.getText().toString().length() == 6 ||
-                                        userpassword.getText().toString().length() > 6) {
-                                    if (userpassword.getText().toString().equals(userconfirmpassword.getText().toString())) {
-
-                                        doSignup(numberString, useremail.getText().toString(),
-                                                userpassword.getText().toString(), genderString,
-                                                fullname.getText().toString());
+                                            doSignup(number.getText().toString().trim(), useremail.getText().toString(),
+                                                    userpassword.getText().toString(),
+                                                    fullname.getText().toString());
 
 
+                                        } else {
+                                            Utils.showToastMessage("Password doesn't match", getActivity());
+
+                                        }
                                     } else {
-                                        Utils.showToastMessage("Password doesn't match", getActivity());
+                                        Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
 
                                     }
                                 } else {
-                                    Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
+                                    Utils.showToastMessage("Name Should be greater then 3 characters", getActivity());
 
                                 }
+
+
                             } else {
-                                Utils.showToastMessage("Name Should be greater then 3 characters", getActivity());
+                                Utils.showToastMessage("Enter Valid Email", getActivity());
 
                             }
-
-
                         } else {
-                            Utils.showToastMessage("Enter Valid Email", getActivity());
+                            Utils.showToastMessage("Enter Valid Number", getActivity());
 
                         }
+
 
 //                        signup api call
 
@@ -214,7 +219,7 @@ public class SignupFragment extends Fragment implements INetworkListener {
         });
     }
 
-    void doSignup(String number, String email, String paswd, String gender, String fullname) {
+    void doSignup(String number, String email, String paswd, String fullname) {
         try {
             Utils.showDialog(progressDialog);
             RestNetworkRequestHandler restNetworkRequestHandler = new RestNetworkRequestHandler(getActivity(), this);
@@ -346,7 +351,7 @@ public class SignupFragment extends Fragment implements INetworkListener {
 
     public boolean toValidateSignup() {
         boolean isValidate = false;
-        if (!number.getText().toString().equals("")&&
+        if (!number.getText().toString().equals("") &&
                 !useremail.getText().toString().equals("")
                 && !userpassword.getText().toString().equals("") &&
                 !userconfirmpassword.getText().toString().equals("")

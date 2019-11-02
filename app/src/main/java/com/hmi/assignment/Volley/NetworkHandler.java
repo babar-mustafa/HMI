@@ -42,7 +42,7 @@ public class NetworkHandler {
     private INetworkListener listener;
     private Class mResponseModel;
     private Context mContext;
-
+    private int mycode=0;
 
     /*
      * @param mResponseModel provide Response Model to receive response
@@ -176,7 +176,7 @@ public class NetworkHandler {
                                 baseModel = getBaseBaseModel(ex);
                             }
                             if (listener != null) {
-                                if (!baseModel.getStatus())
+                                if (mycode!=200)
                                     listener.onError(baseModel, tag, paramRequest);
                                 else listener.onResponseReceive(baseModel, tag, paramRequest);
                             }
@@ -226,6 +226,7 @@ public class NetworkHandler {
                 } catch (UnsupportedEncodingException e) {
                     parsed = new String(response.data);
                 }
+                mycode= response.statusCode;
                 return Response.success(parsed, parseIgnoreCacheHeaders(response));
             }
 

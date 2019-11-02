@@ -15,5 +15,7 @@
     <string name="login_text">Login</string>
 
     <string name="error_String">An UnExpected Error Has Occured</string>
+    <string name="createAccount">Create Account</string>
+    <string name="welcome_text">Welcome to HomeChef</string>
 
 </resources>
