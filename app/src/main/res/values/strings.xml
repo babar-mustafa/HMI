@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Hmi Assignment</string>
+    <string name="network_internet_connection_error">Internet connection error</string>
+    <string name="toast_request_timeout_excetion">Error connecting server please try again</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_text">Sign Up</string>
+    <string name="email_text">Email*</string>
+    <string name="setpaswd_text">Set Password*</string>
+    <string name="confirmpass_text">Confirm Password*</string>
+    <string name="fullnam_text">Full Name*</string>
+    <string name="mobile_text">Mobile*</string>
+    <string name="register_text">Signup</string>
+    <string name="login_text">Login</string>
+
+    <string name="error_String">An UnExpected Error Has Occured</string>
+
+</resources>
