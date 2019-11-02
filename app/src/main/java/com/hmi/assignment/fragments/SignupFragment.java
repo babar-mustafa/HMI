@@ -163,57 +163,59 @@ public class SignupFragment extends Fragment implements INetworkListener {
         registeruser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Utils.isInternetConnected(getActivity())){
+                    try {
+                        if (!toValidateSignup()) {
+                            Utils.showToastMessage("Please fill all required fields", getActivity());
+
+                        } else {
+
+                            if (number.getText().toString().trim().length() >= 10) {
+                                if (Utils.isValidEmail(useremail.getText().toString().trim())) {
+                                    if (fullname.getText().toString().length() == 4 || fullname.getText().toString().length() > 4) {
+                                        if (userpassword.getText().toString().length() == 6 ||
+                                                userpassword.getText().toString().length() > 6) {
+                                            if (userpassword.getText().toString().equals(userconfirmpassword.getText().toString())) {
+
+                                                doSignup(number.getText().toString().trim(), useremail.getText().toString(),
+                                                        userpassword.getText().toString(),
+                                                        fullname.getText().toString());
 
 
-                try {
-                    if (!toValidateSignup()) {
-                        Utils.showToastMessage("Please fill all required fields", getActivity());
+                                            } else {
+                                                Utils.showToastMessage("Password doesn't match", getActivity());
 
-                    } else {
-
-                        if (number.getText().toString().trim().length() >= 10) {
-                            if (Utils.isValidEmail(useremail.getText().toString().trim())) {
-                                if (fullname.getText().toString().length() == 4 || fullname.getText().toString().length() > 4) {
-                                    if (userpassword.getText().toString().length() == 6 ||
-                                            userpassword.getText().toString().length() > 6) {
-                                        if (userpassword.getText().toString().equals(userconfirmpassword.getText().toString())) {
-
-                                            doSignup(number.getText().toString().trim(), useremail.getText().toString(),
-                                                    userpassword.getText().toString(),
-                                                    fullname.getText().toString());
-
-
+                                            }
                                         } else {
-                                            Utils.showToastMessage("Password doesn't match", getActivity());
+                                            Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
 
                                         }
                                     } else {
-                                        Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
+                                        Utils.showToastMessage("Name Should be greater then 3 characters", getActivity());
 
                                     }
+
+
                                 } else {
-                                    Utils.showToastMessage("Name Should be greater then 3 characters", getActivity());
+                                    Utils.showToastMessage("Enter Valid Email", getActivity());
 
                                 }
-
-
                             } else {
-                                Utils.showToastMessage("Enter Valid Email", getActivity());
+                                Utils.showToastMessage("Enter Valid Number", getActivity());
 
                             }
-                        } else {
-                            Utils.showToastMessage("Enter Valid Number", getActivity());
 
                         }
-
-
-//                        signup api call
+                    } catch (Exception e) {
+                        Utils.showToastMessage(getActivity().getResources().getString(R.string.error_String), getActivity());
 
                     }
-                } catch (Exception e) {
-                    Utils.showToastMessage(getActivity().getResources().getString(R.string.error_String), getActivity());
+                }else {
+                    Utils.showToastMessage("Internet Not Available Please try again Later", getActivity());
 
                 }
+
+
 
             }
         });

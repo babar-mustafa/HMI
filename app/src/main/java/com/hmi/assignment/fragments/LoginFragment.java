@@ -152,41 +152,46 @@ public class LoginFragment extends Fragment implements INetworkListener {
         loginuser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Utils.isInternetConnected(getActivity())){
+                    try {
+
+                        if (!toValidateLogin()) {
+                            Utils.showToastMessage("Please fill all required fields", getActivity());
+
+                        } else {
 
 
-                try {
-                    if (!toValidateLogin()) {
-                        Utils.showToastMessage("Please fill all required fields", getActivity());
+                            if (number.getText().toString().trim().length() >= 10) {
+                                if (userpassword.getText().toString().length() == 6 ||
+                                        userpassword.getText().toString().length() > 6) {
 
-                    } else {
+                                    doLogin(number.getText().toString().trim(),
+                                            userpassword.getText().toString().trim());
 
 
-                        if (number.getText().toString().trim().length() >= 10) {
-                            if (userpassword.getText().toString().length() == 6 ||
-                                    userpassword.getText().toString().length() > 6) {
+                                } else {
+                                    Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
 
-                                doLogin(number.getText().toString().trim(),
-                                        userpassword.getText().toString().trim());
+                                }
 
 
                             } else {
-                                Utils.showToastMessage("Password Should be greater then 5 characters", getActivity());
+                                Utils.showToastMessage("Enter Valid Mobile Number", getActivity());
 
                             }
 
 
-                        } else {
-                            Utils.showToastMessage("Enter Valid Mobile Number", getActivity());
-
                         }
-
-//                        signup api call
+                    } catch (Exception e) {
+                        Utils.showToastMessage(getActivity().getResources().getString(R.string.error_String), getActivity());
 
                     }
-                } catch (Exception e) {
-                    Utils.showToastMessage(getActivity().getResources().getString(R.string.error_String), getActivity());
+                }else {
+                    Utils.showToastMessage("Internet Not Available Please try again Later", getActivity());
 
                 }
+
+
 
             }
         });
